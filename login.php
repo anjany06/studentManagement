@@ -1,7 +1,9 @@
 <?php
+//database connection file
 include 'db.php';
 session_start();
 
+//checks if form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $username = $_POST['username'];
   $password = $_POST['password'];
@@ -9,9 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $sql = "SELECT * FROM users WHERE username='$username'";
   $result = $conn->query($sql);
 
+  //checks if user is exists and password is correct
   if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
-    if (password_verify($password, $user['password'])) {
+    //if user exits then sets variable
+    if ($password == $user['password']) {
       $_SESSION['user_id'] = $user['id'];
       $_SESSION['role'] = $user['role'];
       header("Location: dashboard.php");
@@ -40,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     align-items: center;
